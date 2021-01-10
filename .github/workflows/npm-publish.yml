@@ -11,6 +11,19 @@ on:
     - master 
 
 jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm install
+    - run: npm build
+    - run: echo "build is done.. "
   test:
     name: unit test
     runs-on: ubuntu-latest
@@ -22,6 +35,17 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm install
-    - run: cd ShapeformAlgorithmeProject
     - run: npm test
-    - run: echo "hello world"
+    - run: echo "Test complete"
+  Deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: echo "Deploy til EC2 instance via. github webhook to AWS.."
+  
